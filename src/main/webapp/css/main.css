@@ -1,0 +1,274 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0d1117;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+.auth-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: 40px;
+}
+
+.auth-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.auth-left {
+    flex: 1;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-left h2 {
+    font-size: 32px;
+    color: #4d8ef0;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #b0c4de;
+}
+
+/* LOGO SECTION */
+.auth-right {
+    flex: 1.5;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logo-container {
+    width: 630px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 60px;
+    flex-shrink: 0;
+}
+
+.main-logo {
+    width: 180%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(77, 142, 240, 0.4));
+}
+
+/* INPUTS */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    outline: none;
+}
+
+select {
+    width: 100%;
+    padding: 10px 14px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 14px;
+    outline: none;
+}
+
+/* BUTTONS */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.button-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.btn-blue, .btn-register, .btn-admin {
+    padding: 14px 20px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-blue:hover, .btn-register:hover, .btn-admin:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-blue {
+    background: #2563eb;
+    color: #fff;
+    flex: 1;
+}
+
+.btn-register {
+    background: #2563eb;
+    color: #fff;
+    flex: 1.5;
+}
+
+.btn-admin {
+    background: #374151;
+    color: #d1d5db;
+    width: 100%;
+}
+
+.btn-green {
+    padding: 10px 24px;
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.btn-green:hover { background: #15803d; }
+
+.full-width { width: 100%; }
+
+/* MESSAGES */
+.error-msg {
+    color: #f87171;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.success-msg {
+    color: #4ade80;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* REGISTER PAGE */
+.register-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px;
+}
+
+.register-box {
+    background: #161b22;
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    max-width: 860px;
+}
+
+.register-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.register-header h2 {
+    font-size: 22px;
+    color: #fff;
+}
+
+.register-sub {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.badge-student {
+    padding: 6px 16px;
+    background: #334155;
+    color: #94a3b8;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.register-panels {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 10px;
+}
+
+.panel {
+    flex: 1;
+    background: #1e2530;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel h3 {
+    font-size: 15px;
+    color: #c0cce0;
+    margin-bottom: 16px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .auth-box {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    .logo-container {
+        width: 375px;
+        height: 375px;
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
+
+    .auth-left {
+        width: 100%;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 600px) {
+    .register-panels { flex-direction: column; }
+}
