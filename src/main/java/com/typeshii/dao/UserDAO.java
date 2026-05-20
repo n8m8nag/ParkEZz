@@ -1,0 +1,124 @@
+package com.typeshii.dao;
+
+import com.typeshii.model.User;
+import com.typeshii.util.DBConnection;
+import java.sql.*; 
+import java.util.ArrayList;
+import java.util.List;
+
+// handles all db stuff for user table
+public class UserDAO {
+
+    // find user by primary key user_id
+    public User getUserByUserId(int userId) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = mapUser(rs);
+            }
+        } catch (Exception e) {
+            System.err.println("UserDAO.getUserByUserId error: " + e.getMessage());
+        }
+        return user;
+    }
+
+    // find user by  id - used for duplicate check while registering
+    public User getUserById(String id) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = mapUser(rs);
+            }
+        } catch (Exception e) {
+            System.err.println("UserDAO.getUserById error: " + e.getMessage());
+        }
+        return user;
+    }
+
+    // find user by phone - for duplicate check while registering
+    public User getUserByPhone(String phone) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE phone = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, phone);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = mapUser(rs);
+            }
+        } catch (Exception e) {
+            System.err.println("UserDAO.getUserByPhone error: " + e.getMessage());
+        }
+        return user;
+    }
+
+    // insert new user
+    public int insertUser(User user) {
+        String sql = "INSERT INTO users (full_name, id, phone, user_type) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getId());
+            ps.setString(3, user.getPhone());
+            ps.setString(4, user.getUserType());
+            ps.executeUpdate();
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) return keys.getInt(1);
+        } catch (Exception e) {
+            System.err.println("UserDAO.insertUser error: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    // get users filtered by vehicle number - for admin search
+    public List<User> getUsersByVehicleNo(String vehicleNo) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT u.* FROM users u INNER JOIN vehicle v ON u.user_id = v.user_id WHERE v.vehicle_no LIKE ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + vehicleNo + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (Exception e) {
+            System.err.println("UserDAO.getUsersByVehicleNo error: " + e.getMessage());
+        }
+        return users;
+    }
+
+    // get all users - for admin users page
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users ORDER BY user_id";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (Exception e) {
+            System.err.println("UserDAO.getAllUsers error: " + e.getMessage());
+        }
+        return users;
+    }
+
+    // maps resultset row to user object
+    private User mapUser(ResultSet rs) throws SQLException {
+        User u = new User();
+        u.setUserId(rs.getInt("user_id"));
+        u.setFullName(rs.getString("full_name"));
+        u.setId(rs.getString("id"));
+        u.setPhone(rs.getString("phone"));
+        u.setUserType(rs.getString("user_type"));
+        return u;
+    }
+}
