@@ -101,7 +101,7 @@
                         <input type="hidden" name="lotId"  value="${selectedSlot.lotId}"/>
                         <label>Enter Vehicle Number</label>
                         <input type="text" name="vehicleNo" placeholder="Vehicle No" required/>
-                        <input type="hidden" name="userId" value="1"/>
+                        <input type="hidden" name="userId" value=""/>
                         <div class="popup-actions">
                             <button type="submit" class="btn-occupy">Occupy</button>
                             <button type="submit" formaction="${pageContext.request.contextPath}/slot/reserve"

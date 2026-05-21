@@ -16,7 +16,11 @@ public class RecordDAO {
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, record.getSlotNo());
             ps.setString(2, record.getVehicleNo());
-            ps.setInt(3, record.getUserId());
+            if (record.getUserId() == 0) {
+                ps.setNull(3, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(3, record.getUserId());
+            }
             ps.setString(4, record.getActionType());
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
@@ -32,8 +36,8 @@ public class RecordDAO {
         String sql =
             "SELECT r.*, u.full_name, u.phone, v.model, v.color " +
             "FROM record r " +
-            "LEFT JOIN users u ON r.user_id = u.user_id " +
             "LEFT JOIN vehicle v ON r.vehicle_no = v.vehicle_no " +
+            "LEFT JOIN users u ON v.user_id = u.user_id " +
             "WHERE r.slot_no = ? AND r.action_type = 'Enter' " +
             "ORDER BY r.action_time DESC LIMIT 1";
         try (Connection conn = DBConnection.getConnection();

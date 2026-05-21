@@ -3,17 +3,20 @@ package com.typeshii.services;
 import com.typeshii.dao.SlotDAO;
 import com.typeshii.dao.LotDAO;
 import com.typeshii.dao.RecordDAO;
+import com.typeshii.dao.VehicleDAO;
 import com.typeshii.model.Slot;
 import com.typeshii.model.Lot;
 import com.typeshii.model.Record;
+import com.typeshii.model.Vehicle;
 import java.util.List;
 
-// business logic for parking 
+// business logic for parking
 public class ParkingService {
 
     private SlotDAO slotDAO = new SlotDAO();
     private LotDAO lotDAO = new LotDAO();
     private RecordDAO recordDAO = new RecordDAO();
+    private VehicleDAO vehicleDAO = new VehicleDAO();
 
     // get all lots for dropdown
     public List<Lot> getAllLots() {
@@ -32,12 +35,14 @@ public class ParkingService {
 
     // enter - mark slot occupied and insert record
     public boolean enterSlot(int slotNo, String vehicleNo, int userId) {
+        Vehicle vehicle = vehicleDAO.getVehicleByPlate(vehicleNo);
+        int resolvedUserId = (vehicle != null) ? vehicle.getUserId() : userId;
         boolean updated = slotDAO.updateSlotLabel(slotNo, "Occupied");
         if (updated) {
             Record record = new Record();
             record.setSlotNo(slotNo);
             record.setVehicleNo(vehicleNo);
-            record.setUserId(userId);
+            record.setUserId(resolvedUserId);
             record.setActionType("Enter");
             recordDAO.insertRecord(record);
         }
@@ -60,12 +65,14 @@ public class ParkingService {
 
     // reserve a slot
     public boolean reserveSlot(int slotNo, String vehicleNo, int userId) {
+        Vehicle vehicle = vehicleDAO.getVehicleByPlate(vehicleNo);
+        int resolvedUserId = (vehicle != null) ? vehicle.getUserId() : userId;
         boolean updated = slotDAO.updateSlotLabel(slotNo, "Reserved");
         if (updated) {
             Record record = new Record();
             record.setSlotNo(slotNo);
             record.setVehicleNo(vehicleNo);
-            record.setUserId(userId);
+            record.setUserId(resolvedUserId);
             record.setActionType("Reserve");
             recordDAO.insertRecord(record);
         }

@@ -46,14 +46,11 @@ CREATE TABLE IF NOT EXISTS record (
     record_id    INT         PRIMARY KEY AUTO_INCREMENT,
     slot_no      INT         NOT NULL,
     vehicle_no   VARCHAR(20) NOT NULL,
-    user_id      INT         NOT NULL,
+    user_id      INT,
     action_type  ENUM('Enter', 'Exit', 'Reserve') NOT NULL,
     action_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_record_slot
         FOREIGN KEY (slot_no) REFERENCES slot(slot_no)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_record_vehicle
-        FOREIGN KEY (vehicle_no) REFERENCES vehicle(vehicle_no)
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_record_user
         FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -255,9 +252,16 @@ INSERT INTO slot (lot_id, slot_label) VALUES
 (5,'Available'),(5,'Available'),(5,'Available'),(5,'Available'),(5,'Available'),
 (5,'Available'),(5,'Available'),(5,'Available'),(5,'Available'),(5,'Available');
 
--- test data
+-- SAMPLE data
 INSERT INTO users (full_name, id, phone, user_type)
-VALUES ('Mishek Sambiu Limbu', 'NP01CP4A240016', '9800000000', 'Student');
+VALUES ('Mishek Sambiu Limbu', 'NP01CP4A240016', '9818650411', 'Student');
 
 INSERT INTO vehicle (vehicle_no, user_id, model, color, vehicle_type)
 VALUES ('BA1PA1234', 1, 'Honda Dio', 'Red', 'Motorcycle');
+
+INSERT INTO users (full_name, id, phone, user_type)
+VALUES ('Abhishek Dangol', 'NP01CP4A240115', '9866041656', 'Student');
+
+INSERT INTO vehicle (vehicle_no, user_id, model, color, vehicle_type)
+VALUES ('BA1PA4468', 2, 'TVS NTorq', 'Blue', 'Motorcycle');
+
